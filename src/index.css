@@ -4,6 +4,16 @@
   box-sizing: border-box;
   font-family: "Alan Sans", sans-serif;
 }
+::-webkit-scrollbar{
+  background: transparent;
+}
+::-webkit-scrollbar-button{
+  display: none;
+}
+::-webkit-scrollbar-thumb{
+  background: #d1d1d169;
+}
+
 
 img.dot{
   width: 15px !important;
