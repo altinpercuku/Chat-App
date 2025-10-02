@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./LeftSidebar.css"
 import assets from '../../assets/assets'
 
 
 const LeftSidebar = () => {
+    const [subMenu, setSubMenu] = useState("closed");
   return (
     <div className='ls'>
         <div className="ls-top">
             <div className="ls-nav">
                 <img src={assets.logo} className='logo' alt="Logo Icon" />
                 <div className="menu">
-                    <img src={assets.menu_icon} alt="Menu Icon" />
+                    <img src={assets.menu_icon} alt="Menu Icon" onClick={() => setSubMenu(subMenu === "closed" ? "open" : "closed" )} />
+                    <div className={`submenu ${subMenu}`}>
+                        <p>
+                            Edit profile
+                        </p>
+                        <hr />
+                        <p>
+                            Logout
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
