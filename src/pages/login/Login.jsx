@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import "./Login.css"
 import assets from "../../../src/assets/assets.js"
+import { useNavigate } from 'react-router-dom'
 import { signUp, signIn } from "../../config/supabase.js"
 
 const Login = () => {
@@ -8,14 +9,17 @@ const Login = () => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
   const handleOnSubmit = async (event) => {
     event.preventDefault()
 
     if (currState === "Sign Up") {
-      await signUp(username, email, password)
+      const success = await signUp(username, email, password)
+      if (success) navigate("/chat")
     } else {
-      await signIn(email, password)
+      const success = await signIn(email, password)
+      if (success) navigate("/chat")
     }
   }
 
