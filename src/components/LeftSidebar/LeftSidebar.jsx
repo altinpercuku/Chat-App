@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./LeftSidebar.css"
 import assets from '../../assets/assets'
-import signOut from "../../config/supabase"
+import {signOut} from "../../config/supabase"
 import { useNavigate } from 'react-router-dom'
 
 const LeftSidebar = () => {

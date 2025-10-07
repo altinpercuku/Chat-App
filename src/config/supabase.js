@@ -1,10 +1,10 @@
-import { createClient } from '@supabase/supabase-js'
+// /src/config/supabase.js
+import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = 'https://updxbumgmdwcudwdyubx.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwZHhidW1nbWR3Y3Vkd2R5dWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1Nzk2MzgsImV4cCI6MjA3NTE1NTYzOH0.FT6EYHyqoEfrOZ9LyAeREshTI-2cu6t6JpQ3Mop0X84' // replace with your anon key
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
-export default supabase
+const supabaseUrl = "https://updxbumgmdwcudwdyubx.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwZHhidW1nbWR3Y3Vkd2R5dWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1Nzk2MzgsImV4cCI6MjA3NTE1NTYzOH0.FT6EYHyqoEfrOZ9LyAeREshTI-2cu6t6JpQ3Mop0X84";
 
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // ---------------- SIGN UP ----------------
 
 

@@ -10,6 +10,9 @@ import {ToastContainer, toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from 'react-router-dom'
 import { getCurrentUser } from './config/supabase'
+import { supabase } from "./config/supabase"
+import PrivateRoute from './components/PrivateRoute/PrivateRoute'
+
 
 function App() {
   const navigate = useNavigate()
@@ -34,9 +37,23 @@ function App() {
     <>
     <ToastContainer/>
       <Routes>
-        <Route path='/' element={<Login/>} ></Route>
-        <Route path='/chat' element={<Chat/>} ></Route>
-        <Route path='/profile' element={<ProfileUpdate/>} ></Route>
+        <Route path='/' element={<Login />} />
+        <Route
+          path='/chat'
+          element={
+            <PrivateRoute>
+              <Chat />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <PrivateRoute>
+              <ProfileUpdate />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   )
