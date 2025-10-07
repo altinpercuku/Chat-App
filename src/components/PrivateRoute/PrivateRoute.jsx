@@ -1,27 +1,37 @@
-import React, { Children, useEffect, useState } from 'react'
-import {supabase} from "../../config/supabase.js"
-import { Navigate } from 'react-router-dom'
+import React, { Children} from 'react'
+// src/components/PrivateRoute.jsx
+import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "../../config/supabase";
 
+const PrivateRoute = ({ children }) => {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+      setLoading(false);
+    };
 
-const PrivateRoute = () => {
-    const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState(null)
+    getSession();
 
-    useEffect(() => {
-        const checkUser = async () => {
-            const { data: {user} } = await supabase.auth.getUser()
-            setUser(user)
-            setLoading(false)
-        }
-        checkUser()
-    }, [])
-    
-    if (loading) return <div>Loading...</div>
-    
-    if (!user) return <Navigate to="/" replace></Navigate>
-    
-    return children
-}
+    // Listen for auth state changes
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
 
-export default PrivateRoute
+    // Cleanup listener
+    return () => {
+      subscription?.subscription?.unsubscribe();
+    };
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+
+  // If not logged in, redirect to login
+  return session ? children : <Navigate to="/" />;
+};
+
+export default PrivateRoute;
