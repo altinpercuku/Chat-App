@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -8,9 +8,28 @@ import ProfileUpdate from './pages/ProfileUpdate/ProfileUpdate'
 import Chat from './pages/Chat/Chat'
 import {ToastContainer, toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-
+import { useNavigate } from 'react-router-dom'
+import { getCurrentUser } from './config/supabase'
 
 function App() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchUser = async () => {
+      try{
+        const user = await getCurrentUser()
+        if (user) {
+          console.log(user.email)
+        }
+        else{
+          console.log("User not logged in yet.")
+        }
+      }
+      catch (err){
+        console.error(err)
+      }
+    }
+    fetchUser()
+  },[])
   return (
     <>
     <ToastContainer/>

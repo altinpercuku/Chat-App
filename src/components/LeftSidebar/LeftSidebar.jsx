@@ -1,10 +1,19 @@
 import React, { useState } from 'react'
 import "./LeftSidebar.css"
 import assets from '../../assets/assets'
-
+import signOut from "../../config/supabase"
+import { useNavigate } from 'react-router-dom'
 
 const LeftSidebar = () => {
     const [subMenu, setSubMenu] = useState("closed");
+    const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    const success = await signOut()
+    if (success) {
+      navigate("/")
+    }
+  }
   return (
     <div className='ls'>
         <div className="ls-top">
@@ -17,7 +26,7 @@ const LeftSidebar = () => {
                             Edit profile
                         </p>
                         <hr />
-                        <p>
+                        <p onClick={handleLogout}>
                             Logout
                         </p>
                     </div>

@@ -2,7 +2,8 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = 'https://updxbumgmdwcudwdyubx.supabase.co'
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwZHhidW1nbWR3Y3Vkd2R5dWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1Nzk2MzgsImV4cCI6MjA3NTE1NTYzOH0.FT6EYHyqoEfrOZ9LyAeREshTI-2cu6t6JpQ3Mop0X84' // replace with your anon key
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export default supabase
 
 // ---------------- SIGN UP ----------------
 
@@ -82,4 +83,31 @@ export const getCurrentUser = async () => {
     return null
   }
   return user
+}
+
+
+export const signOut = async () => {
+  try {
+    const {data : {user}} = await supabase.auth.getUser()
+  
+    if (user) {
+      await supabase.
+      from("users").
+      update({lastseen : Date.now()}).
+      eq("id", user.id)
+    }
+
+    const {error} = await supabase.auth.signOut()
+    if (error) throw error
+
+    console.log("Logged out successfully")
+    alert("Logged out successfully!")
+
+    return true
+  }
+  catch (err) {
+    console.error(err)
+    alert(err.message)
+    return false
+  }
 }

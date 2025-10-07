@@ -1,8 +1,19 @@
 import React from 'react'
 import "./RightSidebar.css"
 import assets from '../../assets/assets'
+import {signOut} from "../../config/supabase"
+import { useNavigate } from 'react-router-dom'
 
 const RightSidebar = () => {
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    const success = await signOut()
+    if (success) {
+      navigate("/")
+    }
+  }
+
   return (
     <div className='rs'>
       <div className="rs-profile">
@@ -27,7 +38,7 @@ const RightSidebar = () => {
           <img src={assets.pic2} alt="" />
         </div>
       </div>
-      <button>
+      <button onClick={handleLogout}>
         Logout
       </button>
     </div>

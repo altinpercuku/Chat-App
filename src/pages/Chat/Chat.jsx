@@ -3,8 +3,13 @@ import "./Chat.css"
 import LeftSidebar from '../../components/LeftSidebar/LeftSidebar'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import RightSidebar from '../../components/RightSidebar/RightSidebar'
+import signOut from "../../config/supabase"
+import { useNavigate } from 'react-router-dom'
+
 
 const Chat = () => {
+  const navigate = useNavigate()
+  
   return (
     <div className='chat'>
       <div className="chat-container">
