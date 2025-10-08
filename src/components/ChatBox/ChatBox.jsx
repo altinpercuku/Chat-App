@@ -1,9 +1,66 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Chatbox.css"
 import assets from '../../assets/assets'
+import { supabase } from '../../config/supabase'
+import { useNavigate } from 'react-router-dom'
 
 
 const ChatBox = () => {
+  const navigate = useNavigate()
+  const [messages, setMessages] = useState([])
+  const [newMsg, setNewMsg] = useState("")
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession()
+      if (!data) return navigate("/");
+      setUser(data.session.user)
+      fetchMessages()
+    }
+
+    getSession();
+
+
+    const channel = supabase.
+    channel("realtime-messages")
+    .on(
+      "postgres_changes",
+      {event: "INSERT", schema: "public", table: "messages"},
+      (payload) => {
+        setMessages((prev) => [...prev, payload.new])
+      }
+    )
+    .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  },[])
+
+  const fetchMessages = async () => {
+    const {data, error} = await supabase
+    .from("messages")
+    .select("*")
+    .order("created_at", {ascending : true});
+    if (!error) setMessages(data)
+  }
+
+  const sendMessage = async (e) => {
+    e.preventDefaul();
+    if (!newMsg.trim()) return;
+
+    const {error} = await supabase.from("messages").insert([
+      {
+        sender_id: user.id,
+        receiver_id: "global",
+        content: newMsg,
+      },
+    ])
+
+    if (error) console.error(error);
+    setNewMsg("")
+  }
   return (
     <div className='chat-box'>
       <div className="chat-user">
